@@ -1,6 +1,6 @@
 // app/api/todos/[id]/route.js
 import { todos } from "../route";
-
+const URL = process.env.URL;
 export async function PUT(request, { params }) {
   console.log("Received PUT request for todo ID:", params.id);
 
@@ -47,6 +47,7 @@ export async function PUT(request, { params }) {
     );
   }
 }
+
 export async function GET(request, { params }) {
   console.log("Received request for todo ID:", params.id);
 
