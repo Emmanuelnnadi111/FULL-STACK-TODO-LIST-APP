@@ -1,14 +1,16 @@
 import TodoItem from "@/app/components/todoItem";
-// `http://localhost:3000/api/todos/${id}`;
-// app/todo/[id]/page.js
 
+// Environment variable URL
 const URL = process.env.URL;
-// http://${URL}/api/todos/${id}
 
 async function getTodo(id) {
   try {
+    if (!URL) {
+      throw new Error("API URL is not defined in environment variables");
+    }
+
     console.log("Fetching todo with ID:", id);
-    const res = await fetch(`http://${URL}/api/todos/${id}`, {
+    const res = await fetch(`http://${URL}/api/todo/${id}`, {
       cache: "no-store",
     });
 
@@ -23,6 +25,7 @@ async function getTodo(id) {
     const data = await res.json();
     console.log("Received data:", data);
 
+    // Validate the fetched data
     if (!data || typeof data !== "object" || !data.id) {
       console.error("Invalid data received:", data);
       return { error: "Invalid data received from server" };
@@ -37,7 +40,15 @@ async function getTodo(id) {
 
 export default async function TodoPage({ params }) {
   console.log("Rendering TodoPage with params:", params);
-  const result = await getTodo(params.id);
+
+  const { id } = params;
+
+  if (!id) {
+    console.error("Todo ID is not provided in params");
+    return <div>Error: Todo ID is missing</div>;
+  }
+
+  const result = await getTodo(id);
 
   if ("error" in result) {
     console.error("Error in TodoPage:", result.error);

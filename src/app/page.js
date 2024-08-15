@@ -3,7 +3,7 @@
 import TodoList from "./components/todoList";
 const URL = process.env.URL;
 async function getTodos() {
-  const res = await fetch("http://localhost:3000/api/todos", {
+  const res = await fetch(`http://localhost:3000/api/todos`, {
     cache: "no-store",
   });
   if (!res.ok) {
