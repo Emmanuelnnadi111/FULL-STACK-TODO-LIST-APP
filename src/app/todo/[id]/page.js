@@ -10,7 +10,7 @@ async function getTodo(id) {
     }
 
     console.log("Fetching todo with ID:", id);
-    const res = await fetch(`http://${URL}/api/todo/${id}`, {
+    const res = await fetch(`http://localhost:3000/api/todos/${id}`, {
       cache: "no-store",
     });
 
