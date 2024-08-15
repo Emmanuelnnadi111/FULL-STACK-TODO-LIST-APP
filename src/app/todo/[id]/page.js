@@ -1,7 +1,10 @@
 import TodoItem from "@/app/components/todoItem";
 // `http://localhost:3000/api/todos/${id}`;
 // app/todo/[id]/page.js
+
 const URL = process.env.URL;
+// http://${URL}/api/todos/${id}
+
 async function getTodo(id) {
   try {
     console.log("Fetching todo with ID:", id);
