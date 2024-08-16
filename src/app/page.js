@@ -1,9 +1,9 @@
 // app/page.js
 
 import TodoList from "./components/todoList";
-const URL = process.env.URL;
+const URL = process.env.URL || 'http://localhost:3000';
 async function getTodos() {
-  const res = await fetch(`http://localhost:3000/api/todos`, {
+  const res = await fetch(`${URL}/api/todos`, {
     cache: "no-store",
   });
   if (!res.ok) {
