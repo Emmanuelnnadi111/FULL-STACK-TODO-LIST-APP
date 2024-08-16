@@ -1,7 +1,7 @@
+import { useEffect, useState } from 'react';
 import TodoItem from "@/app/components/todoItem";
 
-// Environment variable URL
-const URL = process.env.URL || 'http://localhost:3000'
+const URL = process.env.URL || 'http://localhost:3000';
 
 async function getTodo(id) {
   try {
@@ -21,7 +21,6 @@ async function getTodo(id) {
     const data = await res.json();
     console.log("Received data:", data);
 
-    // Validate the fetched data
     if (!data || typeof data !== "object" || !data.id) {
       console.error("Invalid data received:", data);
       return { error: "Invalid data received from server" };
@@ -34,23 +33,36 @@ async function getTodo(id) {
   }
 }
 
-export default async function TodoPage({ params }) {
-  console.log("Rendering TodoPage with params:", params);
+export default function TodoPage({ params }) {
+  const [todo, setTodo] = useState(null);
+  const [error, setError] = useState(null);
 
-  const { id } = params;
+  useEffect(() => {
+    const fetchTodo = async () => {
+      if (!params.id) {
+        setError("Todo ID is missing");
+        return;
+      }
 
-  if (!id) {
-    console.error("Todo ID is not provided in params");
-    return <div>Error: Todo ID is missing</div>;
+      const result = await getTodo(params.id);
+
+      if ("error" in result) {
+        setError(result.error);
+      } else {
+        setTodo(result);
+      }
+    };
+
+    fetchTodo();
+  }, [params.id]);
+
+  if (error) {
+    return <div>Error: {error}</div>;
   }
 
-  const result = await getTodo(id);
-
-  if ("error" in result) {
-    console.error("Error in TodoPage:", result.error);
-    return <div>Error: {result.error}</div>;
+  if (!todo) {
+    return <div>Loading...</div>;
   }
 
-  console.log("Rendering TodoItem with:", result);
-  return <TodoItem initialTodo={result} />;
+  return <TodoItem initialTodo={todo} />;
 }
