@@ -5,9 +5,12 @@ const URL = process.env.URL;
 
 async function getTodo(id) {
   try {
+    if (!URL) {
+      throw new Error("API URL is not defined in environment variables");
+    }
 
     console.log("Fetching todo with ID:", id);
-    const res = await fetch(`${URL}/api/todos/${id}`, {
+    const res = await fetch(`http://localhost:3000/api/todos/${id}`, {
       cache: "no-store",
     });
 
