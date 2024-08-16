@@ -1,11 +1,10 @@
 import TodoItem from "@/app/components/todoItem";
 
 // Environment variable URL
-const URL = process.env.URL;
+const URL = process.env.URL || 'http://localhost:3000'
 
 async function getTodo(id) {
   try {
-
     console.log("Fetching todo with ID:", id);
     const res = await fetch(`${URL}/api/todos/${id}`, {
       cache: "no-store",
