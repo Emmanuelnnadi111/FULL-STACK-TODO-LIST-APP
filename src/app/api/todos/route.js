@@ -1,5 +1,5 @@
 // app/api/todos/route.js
-
+const URL = process.env.URL;
 export const todos = [
   { id: 1, text: "Learn Next.js" },
   { id: 2, text: "Build a todo app" },

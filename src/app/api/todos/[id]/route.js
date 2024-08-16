@@ -47,6 +47,7 @@ export async function PUT(request, { params }) {
     );
   }
 }
+
 export async function GET(request, { params }) {
   console.log("Received request for todo ID:", params.id);
 
