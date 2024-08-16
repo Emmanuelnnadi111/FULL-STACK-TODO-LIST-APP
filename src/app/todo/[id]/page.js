@@ -1,21 +1,17 @@
 import TodoItem from "@/app/components/todoItem";
 
 // Environment variable URL
-const URL = process.env.URL;
+const URL =process.env.URL || 'http://localhost:3000';
 
 async function getTodo(id) {
   try {
     if (!URL) {
       throw new Error("API URL is not defined in environment variables");
     }
-
-    console.log("Fetching todo with ID:", id);
-    const res = await fetch(`http://localhost:3000/api/todos/${id}`, {
+    const res = await fetch(`${URL}/api/todos/${id}`, {
       cache: "no-store",
     });
-
     console.log("Response status:", res.status);
-
     if (!res.ok) {
       const errorData = await res.text();
       console.error(`HTTP error! status: ${res.status}, body: ${errorData}`);
