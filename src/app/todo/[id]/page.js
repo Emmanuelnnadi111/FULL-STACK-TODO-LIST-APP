@@ -7,7 +7,6 @@ async function getTodo(id) {
   try {
     if (!URL) {
       throw new Error("API URL is not defined in environment variables");
-    }
     const res = await fetch(`${URL}/api/todos/${id}`, {
       cache: "no-store",
     });
