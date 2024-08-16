@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
 import TodoItem from "@/app/components/todoItem";
 
-const URL = process.env.URL || 'http://localhost:3000';
+// app/todo/[id]/page.js
 
 async function getTodo(id) {
   try {
+    const URL = process.env.URL || 'http://localhost:3000'
     console.log("Fetching todo with ID:", id);
     const res = await fetch(`${URL}/api/todos/${id}`, {
       cache: "no-store",
@@ -33,36 +33,15 @@ async function getTodo(id) {
   }
 }
 
-export default function TodoPage({ params }) {
-  const [todo, setTodo] = useState(null);
-  const [error, setError] = useState(null);
+export default async function TodoPage({ params }) {
+  console.log("Rendering TodoPage with params:", params);
+  const result = await getTodo(params.id);
 
-  useEffect(() => {
-    const fetchTodo = async () => {
-      if (!params.id) {
-        setError("Todo ID is missing");
-        return;
-      }
-
-      const result = await getTodo(params.id);
-
-      if ("error" in result) {
-        setError(result.error);
-      } else {
-        setTodo(result);
-      }
-    };
-
-    fetchTodo();
-  }, [params.id]);
-
-  if (error) {
-    return <div>Error: {error}</div>;
+  if ("error" in result) {
+    console.error("Error in TodoPage:", result.error);
+    return <div>Error: {result.error}</div>;
   }
 
-  if (!todo) {
-    return <div>Loading...</div>;
-  }
-
-  return <TodoItem initialTodo={todo} />;
+  console.log("Rendering TodoItem with:", result);
+  return <TodoItem initialTodo={result} />;
 }
